@@ -18,13 +18,15 @@ def abort(*)
   super
 end
 
-abort "Usage: h (--setup | <term>)" unless ARGV.size > 0
+USAGE = "Usage: h (--setup | <name> | <repo>/<name> | <url>)"
 
-term = ARGV[0]
+term = ARGV.first
 path = nil
 url  = nil
 
 case term
+when nil, "--help"
+  abort USAGE
 when "--setup"
   puts <<-SH
 h() {
