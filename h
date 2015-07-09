@@ -18,9 +18,9 @@ def abort(*)
   super
 end
 
-USAGE = "Usage: h (--setup | <name> | <repo>/<name> | <url>)"
+USAGE = "Usage: h (--setup | <name> | <repo>/<name> | <url>) [git opts]"
 
-term = ARGV.first
+term = ARGV.shift
 path = nil
 url  = nil
 
@@ -82,7 +82,7 @@ unless path.directory?
   # Make sure the parent directory exists
   parent.mkpath
   unless system(
-      'git', 'clone', '--recursive', url.to_s, path.to_s,
+      'git', 'clone', '--recursive', *ARGV, '--', url.to_s, path.to_s,
       out: :err,
       close_others: true,
   )
