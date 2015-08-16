@@ -82,7 +82,12 @@ unless path.directory?
   # Make sure the parent directory exists
   parent.mkpath
   unless system(
-      'git', 'clone', '--recursive', *ARGV, '--', url.to_s, path.to_s,
+      'git',
+      'clone',
+      *(ARGV.any? ? ARGV : ['--recursive', '--depth', '1']),
+      '--',
+      url.to_s,
+      path.to_s,
       out: :err,
       close_others: true,
   )
