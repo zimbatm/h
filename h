@@ -10,33 +10,40 @@ require 'find'
 require 'pathname'
 require 'uri'
 
-# TODO: make that configurable
-CODE_ROOT = Pathname.new('~/code').expand_path
-
 def abort(*)
   puts Dir.pwd
   super
 end
-
-USAGE = "Usage: h (--setup | <name> | <repo>/<name> | <url>) [git opts]"
 
 term = ARGV.shift
 path = nil
 url  = nil
 
 case term
-when nil, "--help"
-  abort USAGE
+when nil, "-h", "--help"
+  puts "h is not installed"
+  puts
+
+  abort "Usage: eval $(h --setup [code-root])"
 when "--setup"
+  code_root = Pathname.new(ARGV[0] || '~/code').expand_path
   puts <<-SH
 h() {
-  _h_dir=$(command h "$@")
+  _h_dir=$(command h "#{code_root}" "$@")
   _h_ret=$?
   [ "$_h_dir" != "$PWD" ] && cd "$_h_dir"
   return $_h_ret
 }
   SH
   exit
+else
+  CODE_ROOT = Pathname.new(term)
+end
+
+term = ARGV.shift
+case term
+when nil, "-h", "--help"
+  abort "Usage: h (<name> | <repo>/<name> | <url>) [git opts]"
 when %r[\A([\w\.\-]+)/([\w\.\-]+)\z] # github user/repo
   url  = URI.parse("https://github.com/#{$1}/#{$2}.git")
   path = CODE_ROOT.join('github.com', $1, $2)
