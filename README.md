@@ -47,6 +47,18 @@ This installs something really similar to `alias h='cd "$(h ~/code "$@")"`
 where ~/code is the root of all your repositories. Once the shell is reloaded
 you can use the above commands.
 
+## h and git shallow clones
+
+`h` creates shallow clones of repositories. Most of the time I want to work
+with the current tree an not fetch too much history (think `torvalds/linux`).
+When the need arises of getting the whole history, `git fetch --unshallow` is
+supposed to convert the repo. Unfortunately it doesn't work for me, it doesn't
+give me all the remote branches. That's why a small `git-unshallow` script is
+provided in this repo.
+
+Just copy the `git-unshallow` script somewhere in the PATH. Next time you want
+to unshallow a repository run `git unshallow`.
+
 ## See also
 
 * [autojump](https://github.com/joelthelion/autojump)
