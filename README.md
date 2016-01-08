@@ -19,8 +19,6 @@ clone into `~/code/<domain>/<path>`.
 
 ## Usage
 
-`h --setup` prints shell code that setups the alias (see [Installation](#Installation))
-
 `h <name>` searches for a project called `<name>` where `<name>` matches
 `^\w\.\-$`. The search is done up to 3 levels deep and the longest match is
 returned. If a result is found the path is printed on stdout. The
@@ -42,10 +40,12 @@ Copy the `h` ruby script to somewhere in the PATH.
 In your `~/.zshrc | ~/.bashrc | ..` add the following line:
 
 ```bash
-eval "$(h --setup)"
+eval "$(h --setup ~/code)"
 ```
 
-This installs something really similar to `alias h='cd "$(h "$@")"`
+This installs something really similar to `alias h='cd "$(h ~/code "$@")"`
+where ~/code is the root of all your repositories. Once the shell is reloaded
+you can use the above commands.
 
 ## See also
 
