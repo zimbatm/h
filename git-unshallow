@@ -11,6 +11,8 @@ if ! [ -f .git/shallow ]; then
 fi
 
 repo=$(git remote -v | grep origin | head -n1 | awk '{ print $2 }')
+echo "Unshallowing $repo"
+git fetch --unshallow
 echo "Restoring $repo"
 git remote rm origin
 git remote add origin "$repo"
