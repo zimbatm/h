@@ -1,0 +1,69 @@
+#!/usr/bin/env ruby
+#
+# Usage: up
+#
+# Move back up to the project root.
+#
+# Up has a heuristic to detect the project root.
+#
+# If no project root is found it stays in the current directory
+
+require 'find'
+require 'pathname'
+require 'uri'
+
+def abort(*)
+  puts Dir.pwd
+  super
+end
+
+case ARGV.shift
+when "-h", "--help"
+  puts "up is not installed"
+  puts
+
+  abort "Usage: eval $(up --setup)"
+when "--setup"
+  puts <<-SH
+up() {
+  _up_dir=$(command up "$@")
+  if [ $? = 0 ]; then
+    [ "$_up_dir" != "$PWD" ] && cd "$_up_dir"
+  fi
+}
+  SH
+  exit
+end
+
+HOME = Pathname.new(ENV['HOME']) if ENV['HOME']
+PWD = Pathname.pwd
+
+def project_root?(dir)
+  (dir / '.git').directory? ||
+    (dir / '.hg').directory? ||
+    (dir / '.envrc').file? ||
+    (dir / 'Gemfile').file? ||
+    (dir.to_s == ENV['DIRENV_DIR'].to_s[1..-1]) ||
+    false
+end
+
+def should_stop?(dir)
+  dir.root? || dir == HOME
+end
+
+def find_project_root
+  dir = PWD
+
+  # Search parent projects if already in a
+  # sub-project
+  dir = dir.parent if project_root?(dir)
+
+  while !should_stop?(dir)
+    return dir if project_root?(dir)
+    dir = dir.parent
+  end
+
+  PWD
+end
+
+puts find_project_root
