@@ -7,6 +7,8 @@
 # Up has a heuristic to detect the project root.
 #
 # If no project root is found it stays in the current directory
+# If the current directory is already a project root it will try to find
+# a parent project
 
 require 'find'
 require 'pathname'
