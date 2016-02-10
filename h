@@ -45,7 +45,7 @@ case term
 when nil, "-h", "--help"
   abort "Usage: h (<name> | <repo>/<name> | <url>) [git opts]"
 when %r[\A([\w\.\-]+)/([\w\.\-]+)\z] # github user/repo
-  url  = URI.parse("git@github.com:#{$1}/#{$2}.git")
+  url  = "git@github.com:#{$1}/#{$2}.git"
   path = CODE_ROOT.join('github.com', $1, $2)
 when %r[://] # URL
   url  = URI.parse(term)
