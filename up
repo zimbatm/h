@@ -41,10 +41,10 @@ HOME = Pathname.new(ENV['HOME']) if ENV['HOME']
 PWD = Pathname.pwd
 
 def project_root?(dir)
-  (dir / '.git').directory? ||
-    (dir / '.hg').directory? ||
-    (dir / '.envrc').file? ||
-    (dir / 'Gemfile').file? ||
+  (dir + '.git').directory? ||
+    (dir + '.hg').directory? ||
+    (dir + '.envrc').file? ||
+    (dir + 'Gemfile').file? ||
     (dir.to_s == ENV['DIRENV_DIR'].to_s[1..-1]) ||
     false
 end

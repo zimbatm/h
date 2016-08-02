@@ -10,6 +10,8 @@ require 'find'
 require 'pathname'
 require 'uri'
 
+DEFAULT_CODE_ROOT = ENV['H_CODE_ROOT'] || '~/src'
+
 def abort(*)
   puts Dir.pwd
   super
@@ -26,7 +28,7 @@ when nil, "-h", "--help"
 
   abort "Usage: eval $(h --setup [code-root])"
 when "--setup"
-  code_root = Pathname.new(ARGV[0] || '~/code').expand_path
+  code_root = Pathname.new(ARGV[0] || DEFAULT_CODE_ROOT).expand_path
   puts <<-SH
 h() {
   _h_dir=$(command h "#{code_root}" "$@")
