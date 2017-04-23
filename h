@@ -93,7 +93,7 @@ unless path.directory?
   unless system(
       'git',
       'clone',
-      *(ARGV.any? ? ARGV : ['--recursive', '--depth', '1']),
+      *(ARGV.any? ? ARGV : ['--recursive']),
       '--',
       url.to_s,
       path.to_s,
