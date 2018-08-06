@@ -1,4 +1,7 @@
 # `h` - faster shell navigation of projects
+ 
+[![Built with Nix](https://builtwithnix.org/badge.svg)](https://builtwithnix.org)
+[![Build Status](https://travis-ci.org/zimbatm/h.svg?branch=master)](https://travis-ci.org/zimbatm/h)
 
 `h` is a small shell utility that I use every day to jump between projects quickly. It is complimentary to the amazing j
 ([autojump](https://github.com/joelthelion/autojump)) project and both help me
