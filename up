@@ -24,7 +24,7 @@ when "-h", "--help"
   puts "up is not installed"
   puts
 
-  abort "Usage: eval $(up --setup)"
+  abort "Usage: eval \"$(up --setup)\""
 when "--setup"
   puts <<-SH
 up() {

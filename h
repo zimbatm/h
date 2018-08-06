@@ -26,7 +26,7 @@ when nil, "-h", "--help"
   puts "h is not installed"
   puts
 
-  abort "Usage: eval $(h --setup [code-root])"
+  abort "Usage: eval \"$(h --setup [code-root])\""
 when "--setup"
   code_root = Pathname.new(ARGV[0] || DEFAULT_CODE_ROOT).expand_path
   puts <<-SH
