@@ -7,6 +7,8 @@
 # url for cloning
 
 require 'find'
+require 'json'
+require 'open-uri'
 require 'pathname'
 require 'uri'
 
@@ -47,11 +49,16 @@ case term
 when nil, "-h", "--help"
   abort "Usage: h (<name> | <repo>/<name> | <url>) [git opts]"
 when %r[\A([\w\.\-]+)/([\w\.\-]+)\z] # github user/repo
-  url  = "git@github.com:#{$1}/#{$2}.git"
-  path = CODE_ROOT.join('github.com', $1, $2)
+  # query the github API to find out the right file case
+  api_info = JSON.load(open("https://api.github.com/repos/#{$1}/#{$2}").read)
+  owner = api_info["owner"]["login"]
+  repo = api_info["name"]
+
+  url  = "git@github.com:#{owner}/#{repo}.git"
+  path = CODE_ROOT.join('github.com', owner, repo)
 when %r[://] # URL
   url  = URI.parse(term)
-  path = CODE_ROOT.join(url.host, url.path[1..-1])
+  path = CODE_ROOT.join(url.host.downcase, url.path[1..-1])
   abort "Missing url scheme" unless url.scheme
 when %r[\Agit@([^:]+):(.*)] # git url
   url  = term
