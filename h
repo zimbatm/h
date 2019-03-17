@@ -59,6 +59,13 @@ when %r[\Agit@([^:]+):(.*)] # git url
 when %r[\A[\w\.\-]+\z] # just search for repo
   path_depth = 0
 
+  if term == term.downcase then
+    # case insentitive search
+    compare = ->(basename) { basename.downcase == term }
+  else
+    compare = ->(basename) { basename == term }
+  end
+
   # Find all matches
   CODE_ROOT.find do |curpath|
     next unless curpath.directory?
@@ -66,7 +73,7 @@ when %r[\A[\w\.\-]+\z] # just search for repo
     depth = curpath.to_s.sub(CODE_ROOT.to_s, '').split('/').size
 
     # Select deepest result
-    if curpath.basename.to_s == term && depth > path_depth
+    if compare.(curpath.basename.to_s) && depth > path_depth
       path = curpath
       path_depth = depth
     end
