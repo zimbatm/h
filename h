@@ -50,9 +50,14 @@ when nil, "-h", "--help"
   abort "Usage: h (<name> | <repo>/<name> | <url>) [git opts]"
 when %r[\A([\w\.\-]+)/([\w\.\-]+)\z] # github user/repo
   # query the github API to find out the right file case
-  api_info = JSON.load(open("https://api.github.com/repos/#{$1}/#{$2}").read)
-  owner = api_info["owner"]["login"]
-  repo = api_info["name"]
+  begin
+    api_info = JSON.load(open("https://api.github.com/repos/#{$1}/#{$2}").read)
+    owner = api_info["owner"]["login"]
+    repo = api_info["name"]
+  rescue OpenURI::HTTPError => e
+    owner = $1
+    repo = $2
+  end
 
   url  = "git@github.com:#{owner}/#{repo}.git"
   path = CODE_ROOT.join('github.com', owner, repo)
