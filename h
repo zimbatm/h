@@ -54,7 +54,7 @@ when %r[\A([\w\.\-]+)/([\w\.\-]+)\z] # github user/repo
     api_info = JSON.load(open("https://api.github.com/repos/#{$1}/#{$2}").read)
     owner = api_info["owner"]["login"]
     repo = api_info["name"]
-  rescue OpenURI::HTTPError => e
+  rescue OpenURI::HTTPError
     owner = $1
     repo = $2
   end
