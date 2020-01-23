@@ -38,7 +38,7 @@ up() {
 end
 
 HOME = Pathname.new(ENV['HOME']) if ENV['HOME']
-PWD = Pathname.pwd
+PWD = ENV['PWD'] ? Pathname.new(ENV['PWD']) : Pathname.pwd
 
 def project_root?(dir)
   (dir + '.git').directory? ||
