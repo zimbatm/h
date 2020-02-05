@@ -24,24 +24,26 @@ path = nil
 url  = nil
 
 case term
-when nil, "-h", "--help"
-  puts "h is not installed"
-  puts
-
-  abort "Usage: eval \"$(h --setup [code-root])\""
 when "--setup"
   code_root = Pathname.new(ARGV[0] || DEFAULT_CODE_ROOT).expand_path
   puts <<-SH
 h() {
-  _h_dir=$(command h "#{code_root}" "$@")
+  _h_dir=$(command h --resolve "#{code_root}" "$@")
   _h_ret=$?
   [ "$_h_dir" != "$PWD" ] && cd "$_h_dir"
   return $_h_ret
 }
   SH
   exit
-else
+when "--resolve"
   CODE_ROOT = Pathname.new(term)
+else
+  puts "h is not installed"
+  puts
+  puts "h needs to be hooked into the shell before it can be used."
+  puts
+
+  abort "Usage: eval \"$(h --setup [code-root])\""
 end
 
 term = ARGV.shift
