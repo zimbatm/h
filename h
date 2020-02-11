@@ -36,7 +36,7 @@ h() {
   SH
   exit
 when "--resolve"
-  CODE_ROOT = Pathname.new(term)
+  CODE_ROOT = Pathname.new(ARGV.shift)
 else
   puts "h is not installed"
   puts
