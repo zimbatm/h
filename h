@@ -53,7 +53,7 @@ when nil, "-h", "--help"
 when %r[\A([\w\.\-]+)/([\w\.\-]+)\z] # github user/repo
   # query the github API to find out the right file case
   begin
-    api_info = JSON.load(open("https://api.github.com/repos/#{$1}/#{$2}").read)
+    api_info = JSON.load(URI.open("https://api.github.com/repos/#{$1}/#{$2}").read)
     owner = api_info["owner"]["login"]
     repo = api_info["name"]
   rescue OpenURI::HTTPError
