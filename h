@@ -67,7 +67,7 @@ when %r[://] # URL
   url  = URI.parse(term)
   path = CODE_ROOT.join(url.host.downcase, url.path[1..-1])
   abort "Missing url scheme" unless url.scheme
-when %r[\Agit@([^:]+):(.*)] # git url
+when %r[\Agit(?:ea)?@([^:]+):(.*)] # git url
   url  = term
   path = CODE_ROOT.join($1, $2)
 when %r[\A[\w\.\-]+\z] # just search for repo
