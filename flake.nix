@@ -41,7 +41,7 @@
           };
         };
 
-      homeManagerModules.default = { lib, config, pkgs, ... }:
+      homeModules.default = { lib, config, pkgs, ... }:
         let
           h = self.packages.${pkgs.stdenv.system}.default;
         in

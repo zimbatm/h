@@ -84,11 +84,11 @@ Add `h` to your flake inputs and include the module:
   # [ ...snip... ]
 
   outputs = { home-manager, ... } @ inputs: {
-    homeManagerConfigurations.default = home-manager.lib.homeManagerConfiguration {
+    homeConfigurations.default = home-manager.lib.homeManagerConfiguration {
       pkgs = nixpkgs.legacyPackages.x86_64-linux;
 
       modules = [
-        h.homeManagerModules.default
+        h.homeModules.default
         ./home.nix
       ];
     };
