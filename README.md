@@ -50,6 +50,54 @@ This installs something really similar to `alias h='cd "$(h ~/code "$@")"`
 where ~/code is the root of all your repositories. Once the shell is reloaded
 you can use the above commands.
 
+### With nix-darwin
+
+Add `h` to your flake inputs and include the module:
+
+```nix
+{
+  inputs.h.url = "https://flakehub.com/f/zimbatm/h/0.1.35.tar.gz";
+  # [ ...snip... ]
+
+  outputs = { nix-darwin, ... } @ inputs: {
+    darwinConfigurations.default = nix-darwin.lib.darwinSystem {
+      system = "x86_64-darwin";
+
+      modules = [
+        h.darwinModules.default
+        ({ pkgs, ... }: {
+          # ... your configuration ...
+        })
+      ];
+    };
+  }
+}
+```
+
+### With Home Manager
+
+Add `h` to your flake inputs and include the module:
+
+```nix
+{
+  inputs.h.url = "https://flakehub.com/f/zimbatm/h/0.1.35.tar.gz";
+  # [ ...snip... ]
+
+  outputs = { home-manager, ... } @ inputs: {
+    homeManagerConfigurations.default = home-manager.lib.homeManagerConfiguration {
+      pkgs = nixpkgs.legacyPackages.x86_64-linux;
+
+      modules = [
+        h.homeManagerModules.default
+        ./home.nix
+      ];
+    };
+  };
+}
+```
+
+**Note:** enable `zsh` or `bash` as well, via `programs.zsh.enable = true;` or `programs.bash.enable = true;`.
+
 ## See also
 
 * [autojump](https://github.com/joelthelion/autojump)
