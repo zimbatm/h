@@ -40,5 +40,31 @@
             '';
           };
         };
+
+      homeModules.default = { lib, config, pkgs, ... }:
+        let
+          h = self.packages.${pkgs.stdenv.system}.default;
+        in
+        {
+          options = {
+            programs.h.codeRoot = lib.mkOption {
+              type = lib.types.str;
+              default = "~/src";
+              description = lib.mdDoc ''
+                Root location for checking out your code.
+              '';
+            };
+          };
+          config = let
+            hook = ''
+              eval "$(${h}/bin/h --setup ${lib.escapeShellArg config.programs.h.codeRoot})"
+            '';
+          in {
+            home.packages = [ h ];
+
+            programs.bash.initExtra = hook;
+            programs.zsh.initExtra = hook;
+          };
+        };
     };
 }
