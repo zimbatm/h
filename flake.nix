@@ -64,6 +64,17 @@
 
             programs.bash.initExtra = hook;
             programs.zsh.initExtra = hook;
+            programs.fish.functions.h = {
+              body = ''
+                set _h_dir $(${h}/bin/h --resolve $(path resolve ${config.programs.h.codeRoot}) $argv)
+                set _h_ret $status
+                if test "$_h_dir" != "$PWD"
+                  cd "$_h_dir"
+                end
+                return $_h_ret
+              '';
+              wraps = "h";
+            };
           };
         };
     };
