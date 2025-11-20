@@ -23,12 +23,15 @@ term = ARGV.shift
 path = nil
 url  = nil
 
+
 case term
 when "--setup"
   code_root = Pathname.new(ARGV[0] || DEFAULT_CODE_ROOT).expand_path
+  argv0 = Pathname.new(Process.argv0)
+  invoked_path = argv0.absolute? ? argv0.to_s : File.expand_path(argv0.to_s, ENV["PWD"] || Dir.pwd)
   puts <<-SH
 h() {
-  _h_dir=$(command h --resolve "#{code_root}" "$@")
+  _h_dir=$(command #{invoked_path} --resolve "#{code_root}" "$@")
   _h_ret=$?
   [ "$_h_dir" != "$PWD" ] && cd "$_h_dir"
   return $_h_ret
